@@ -6,8 +6,8 @@ import seaborn as sns
 # Carregar os dados
 df = pd.read_csv('data/energia_consumo.csv')
 
-# Reduzir o número de amostras para clareza (opcional)
-amostras = df.sample(n=200, random_state=42)  # Escolhendo 200 amostras aleatórias
+# Reduzir o número de amostras para clareza 
+amostras = df.sample(n=200, random_state=42)  # Escolher 200 amostras aleatórias
 
 # **1. Gráfico de Dispersão (Temperatura x Consumo)**
 plt.figure(figsize=(8, 6))
