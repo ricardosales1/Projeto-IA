@@ -7,6 +7,10 @@ from tkinter import PhotoImage
 # Carregar o modelo salvo
 model = joblib.load('model/energy_model.pkl')
 
+def calcular_gasto(consumo_kwh):
+    tarifa = 0.15  # Euros por kWh
+    return consumo_kwh * tarifa
+
 def fazer_previsao():
     try:
         # Obter os valores inseridos pelo usuário
@@ -34,8 +38,12 @@ def fazer_previsao():
         # Fazer a previsão
         previsao = model.predict(novos_dados)
 
-        # Exibir o resultado
+        # Calcular o custo em euros
+        custo = calcular_gasto(previsao[0])
+
+        # Exibir os resultados
         resultado_label.config(text=f"Consumo Previsto: {previsao[0]:.2f} kWh")
+        custo_label.config(text=f"Custo Estimado: €{custo:.2f}")
 
     except ValueError as e:
         messagebox.showerror("Erro de Validação", f"Entrada inválida: {e}")
@@ -45,7 +53,7 @@ def fazer_previsao():
 # Criar a janela principal
 janela = tk.Tk()
 janela.title("Previsão de Consumo de Energia")
-janela.geometry("400x480")  # Definindo o tamanho da janela
+janela.geometry("400x500")  # Ajustando o tamanho da janela
 janela.config(bg="#f0f0f0")  # Cor de fundo
 
 # Adicionar logo
@@ -85,9 +93,13 @@ entry_pessoas.grid(row=5, column=1, padx=10, pady=5)
 btn_prever = tk.Button(janela, text="Fazer Previsão", command=fazer_previsao, bg="#0076a3", fg="white", font=("Helvetica", 12, "bold"), relief="raised", bd=2)
 btn_prever.grid(row=6, column=0, columnspan=2, pady=20)
 
-# Label para exibir o resultado
+# Label para exibir o resultado do consumo
 resultado_label = tk.Label(janela, text="", bg="#f0f0f0", font=("Helvetica", 14, "bold"))
 resultado_label.grid(row=7, column=0, columnspan=2)
+
+# Label para exibir o custo estimado
+custo_label = tk.Label(janela, text="", bg="#f0f0f0", font=("Helvetica", 14, "bold"))
+custo_label.grid(row=8, column=0, columnspan=2)
 
 # Iniciar o loop principal da interface
 janela.mainloop()
